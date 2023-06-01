@@ -7,7 +7,7 @@ GTool es una herramienta de búsqueda en Google, que permite personalizar tus co
 La línea de comando general para usar GTool es:
 
 ```bash
-gtool [-h] [-L LEVEL] [-p] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp PAGES]
+gtool [-h] [-L LEVEL] [-p] [-r] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp PAGES]
 ```
 
 ## Argumentos
