@@ -22,6 +22,8 @@ gtool [-h] [-L LEVEL] [-p] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp P
     
 -   `-p, --proxies` : Permite el uso de proxy. Se requiere la variable de entorno "PROXY\_URL".
     
+- `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
+
 
 ### Argumentos obligatorios
 

@@ -1,8 +1,9 @@
 import os
 import random
 import argparse
-from gtool.modules.search import search
 from dotenv import load_dotenv
+from pathlib import Path
+from gtool.modules.search import search
 from gtool.settings import USER_AGENTS
 from gtool.logs import setup_logging, valid_loglevel, configure_logging
 
@@ -34,6 +35,16 @@ def _configure_argparse():
         action = 'store_true', 
         default = False, 
         help = 'Allow proxy. Enviroment variable "PROXY_URL" required.'
+    )
+
+    group_g.add_argument(
+        '-r','--rotate', 
+        dest='rotate',
+        action='store_true', 
+        help="""
+            If set, it will choose randomly a .env.N from the ./profiles folder (of the user path). 
+            In this folder the user can add multiple .env (AEC/SCOS/PROXY_URL) files with different configurations.
+            """
     )
 
     # Required arguments
@@ -105,15 +116,36 @@ def _load_proxy():
     }
 
 
-def main():
+def _rotate_profile():
+    profile_path = Path("./profiles")
+    # Check if the profile path exist
+    if profile_path.exists() and profile_path.is_dir():
+        # Extract all the .env files
+        envs = [file.resolve() for file in profile_path.glob(".env*")]
+        if not envs:
+            _logger.error(" -r/--random argument selected but ./profile don't contains any .env file.")
+            return False
+        load_dotenv(random.choice(envs))
+        return True
 
-    load_dotenv() # TODO: if --profile and you have a profile/ folder with a lot of .env.1 it will choose one randomly
+    _logger.error(" -r/--random argument selected but ./profile folder not found.")
+    return False
+
+
+def main():
 
     # Setup configuration
     args = _configure_argparse()
     configure_logging(args.loglevel)
     proxies = _load_proxy() if args.proxies else {}
 
+    # Check enviroment profile
+    if args.rotate:
+        if not _rotate_profile():
+            return 
+    else:    
+        load_dotenv() # TODO: if --profile and you have a profile/ folder with a lot of .env.1 it will choose one randomly
+    
     # Check required enviroment variables
     cookies = ['COOKIE_AEC', 'COOKIE_SCOS']
     for cookie in cookies:
