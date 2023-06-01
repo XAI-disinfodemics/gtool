@@ -7,3 +7,4 @@ __pycache__/
 *.txt
 # Ony for testing purpose
 test.py 
+.env*
