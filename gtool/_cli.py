@@ -1,0 +1,140 @@
+import os
+import random
+import argparse
+from gtool.modules.search import search
+from dotenv import load_dotenv
+from gtool.settings import USER_AGENTS
+from gtool.logs import setup_logging, valid_loglevel, configure_logging
+
+
+_logger = setup_logging(__name__)
+
+
+def _configure_argparse():
+    """Configuration of the parser."""
+
+    parser = argparse.ArgumentParser(
+        description='Use the Google search tool.',
+    )
+
+    # Global config (proxy, number of threads, f.e)
+    group_g = parser.add_argument_group('General optional arguments')
+    group_g.add_argument(
+        '-L', '--loglevel', 
+        dest='loglevel',
+        metavar='LEVEL', 
+        default='WARNING',
+        help=f'log level (default: WARNING). F.e: ["INFO", "DEBUG", "WARNING", "ERROR"]',
+        type=valid_loglevel
+    )
+
+    group_g.add_argument(
+        '-p', '--proxies', 
+        dest='proxies', # Name of the variable (args.<name>)
+        action = 'store_true', 
+        default = False, 
+        help = 'Allow proxy. Enviroment variable "PROXY_URL" required.'
+    )
+
+    # Required arguments
+    group_r = parser.add_argument_group('Required arguments')
+    group_r.add_argument(
+        '-q', '--query',
+        dest='query',
+        metavar='QUERY',
+        type=str, 
+        required=True,
+        help='Query to search.',
+    )
+
+    group_r.add_argument(
+        '-f', '--filename',
+        dest='filename',
+        metavar='FILE', 
+        type=str, 
+        required=True,
+        help='Result filename where all results will be stored.',
+    )
+
+    # Filter arguments
+    group_f = parser.add_argument_group('Filter optional arguments')
+    # Define argument for time filter
+    group_f.add_argument(
+        '--time', 
+        dest='time',
+        choices=['h', 'd', 'w', 'm', 'y'], 
+        help='Specify the time filter. Choices are "h" for last hour, "d" for last day, "w" for last week, "m" for last month, "y" for last year.'
+    )
+    
+    # Define argument for sorting by date
+    group_f.add_argument(
+        '--sort', 
+        dest='sort',
+        action='store_true', 
+        help="If set, sorts results by date, showing the most recent results first."
+    )
+
+    group_f.add_argument(
+        '-mp', '--max_pages', 
+        dest='pages',
+        type=int, 
+        default=3, 
+        help="The maximum number of search result pages to crawl. Default is 3."
+    )
+
+    # Once parser has been configured, arguments will be parsed
+    args = parser.parse_args()
+    return args
+
+
+def _load_proxy():
+    """ In case of arg.proxy = True the proxy url will be read from the enviroment
+    variable "PROXY_URL". 
+
+    Returns
+    -------
+    proxies: dict
+        Proxy dict format from requests library ({'http': .... , 'https': ....})
+    """
+    proxy_url = os.getenv("PROXY_URL")
+    if not proxy_url:
+        raise ValueError("The environment variable PROXY_URL is not defined.")
+    return {
+        "http": proxy_url,
+        "https": proxy_url
+    }
+
+
+def main():
+
+    load_dotenv() # TODO: if --profile and you have a profile/ folder with a lot of .env.1 it will choose one randomly
+
+    # Setup configuration
+    args = _configure_argparse()
+    configure_logging(args.loglevel)
+    proxies = _load_proxy() if args.proxies else {}
+
+    # Check required enviroment variables
+    cookies = ['COOKIE_AEC', 'COOKIE_SCOS']
+    for cookie in cookies:
+        if not os.getenv(cookie):
+            _logger.error(f"{cookie} is required.")
+            return
+
+    with open(args.filename, "w") as file:
+        results = search(
+            query=args.query,
+            user_agent=random.choice(USER_AGENTS),
+            proxies=proxies,
+            cookie_AEC=os.getenv('COOKIE_AEC'),
+            cookie_SOCS=os.getenv('COOKIE_SCOS'),
+            time=args.time,
+            sort=args.sort,
+            max_pages=args.pages
+        )
+        [file.write(f'{u}\n') for u in results]
+
+    _logger.info(f"[{len(results)} URLs extracted]")
+
+if __name__ == '__main__':
+    main()
