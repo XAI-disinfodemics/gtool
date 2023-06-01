@@ -1,0 +1,9 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.csv
+*.json
+*.txt
+# Ony for testing purpose
+test.py 
