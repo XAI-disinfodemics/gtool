@@ -7,7 +7,7 @@ GTool es una herramienta de búsqueda en Google, que permite personalizar tus co
 La línea de comando general para usar GTool es:
 
 ```bash
-gtool [-h] [-L LEVEL] [-p] [-r] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp PAGES]
+gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp PAGES]
 ```
 
 ## Argumentos
@@ -23,6 +23,8 @@ gtool [-h] [-L LEVEL] [-p] [-r] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [
 -   `-p, --proxies` : Permite el uso de proxy. Se requiere la variable de entorno "PROXY\_URL".
     
 - `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
+
+-   `-v, --verbose` : Si se establece, devuelve un JSON con más información (como la página y la posición de la URL).
 
 
 ### Argumentos obligatorios

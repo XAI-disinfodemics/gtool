@@ -1,4 +1,5 @@
 import os
+import json
 import random
 import argparse
 from dotenv import load_dotenv
@@ -45,6 +46,13 @@ def _configure_argparse():
             If set, it will choose randomly a .env.N from the ./profiles folder (of the user path). 
             In this folder the user can add multiple .env (AEC/SCOS/PROXY_URL) files with different configurations.
             """
+    )
+
+    group_g.add_argument(
+        '-v', '--verbose',
+        dest='verbose',
+        action='store_true', 
+        help='If set, returns a JSON with more information (like the page and position of the URL).',
     )
 
     # Required arguments
@@ -125,7 +133,10 @@ def _rotate_profile():
         if not envs:
             _logger.error(" -r/--random argument selected but ./profile don't contains any .env file.")
             return False
-        load_dotenv(random.choice(envs))
+        
+        env_select = random.choice(envs)
+        load_dotenv(env_select)
+        _logger.info(f"[Loaded .env: {env_select}]")
         return True
 
     _logger.error(" -r/--random argument selected but ./profile folder not found.")
@@ -164,7 +175,12 @@ def main():
             sort=args.sort,
             max_pages=args.pages
         )
-        [file.write(f'{u}\n') for u in results]
+
+        if args.verbose:
+            print(results)
+            json.dump(results, file)
+        else:
+            [file.write(f'{d.get("url", None)}\n') for d in results]
 
     _logger.info(f"[{len(results)} URLs extracted]")
 

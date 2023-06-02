@@ -31,12 +31,16 @@ def _search(
         # Add pagination
         params["start"] = i*10 if i else None
 
-        response = session.get(GOOGLE_SEARCH, params=params)
-        if response.status_code != 200:
-            if response.status_code != 429:
-                _logger.error("Captcha block. Try to go to the browser and answer the captcha if it is necessary.")
-            else:
-                _logger.error("An error has ocurred during the search. Skipping...")
+        try:
+            response = session.get(GOOGLE_SEARCH, params=params)
+            if response.status_code != 200:
+                if response.status_code != 429:
+                    _logger.error("Captcha block. Try to go to the browser and answer the captcha if it is necessary.")
+                else:
+                    _logger.error("An error has ocurred during the search. Skipping...")
+                return results
+        except requests.exceptions.ProxyError as e:
+            _logger.error(f"Proxy error {str(e)}")
             return results
 
         # Parse html content
@@ -44,8 +48,12 @@ def _search(
         # Extract results
         count = len(results)
         results += [
-            card.xpath(".//a")[0].get("href").strip().lower()
-            for card in tree.xpath(NEWS_CARD_XPATH)
+            {
+                "url": card.xpath(".//a")[0].get("href").strip().lower(), 
+                "position": index+1+count,
+                "page": i+1
+            }
+            for index, card in enumerate(tree.xpath(NEWS_CARD_XPATH))
         ]    
         if count == len(results):
             _logger.warning("[NO RESULTS FOUND] Skipping...")
