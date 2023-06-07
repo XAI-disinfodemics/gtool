@@ -34,7 +34,7 @@ def _search(
         try:
             response = session.get(GOOGLE_SEARCH, params=params)
             if response.status_code != 200:
-                if response.status_code != 429:
+                if response.status_code == 429:
                     _logger.error("Captcha block. Try to go to the browser and answer the captcha if it is necessary.")
                 else:
                     _logger.error("An error has ocurred during the search. Skipping...")
