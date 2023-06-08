@@ -2,12 +2,45 @@
 
 GTool es una herramienta de búsqueda en Google, que permite personalizar tus consultas y filtrar los resultados según tus necesidades.
 
+## Configuración
+
+Para poder hacer uso de la herramienta es necesario exportar dos variables de entorno que contienen dos cookies obligatorias de Google:
+
+-  COOKIE_AEC: Garantizar que las solicitudes dentro de una sesión de navegación son realizadas por el usuario y no por otros sitios - 6 meses
+-  COOKIE_SCOS: Se utiliza para almacenar el estado de un usuario con respecto a sus elecciones de cookies - 13 meses
+
+```bash
+COOKIE_AEC="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+COOKIE_SCOS="SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+```
+Mediante el uso del argumento `--rotate` se podrán crear distintos enviroments (.env) y almacenarlos en la carpeta `./profiles` (en la ruta actual del usuario), de este modo la herramienta cogerá en cada ejecución un enviroment aleatorio y con ello un set de cookies diferente, reduciendo las probabilidades de captcha. 
+
+![imagen](https://github.com/XAI-disinfodemics/gtool/assets/35236167/fba4b984-53b9-42f0-9a29-63617612b2a6)
+
+### ¿Cómo obtener las cookies?
+
+Para obtener ambas cookies basta con ir al navegador y realizar una búsqueda sobre Google, analizar el tráfico (inspeccionar elemento > Network > petición ?search...) y extraer de ahí las cookies. 
+
+Una forma más cómoda es la siguiente:
+1.- Descargar la extensión de Chrome `Cookie-editor` (https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm).
+2.- Habilitar en incognito
+3.- Realizar una búsqueda en Google y **rechazar cookies**
+4.- Abrir la extensión y copiar la información de la cookie **AEC** y **SCOS**
+5.- Repetir los pasos 2-4 para cada .env que se quiera añadir en la carpeta `./profiles`
+
+<img src="https://github.com/XAI-disinfodemics/gtool/assets/35236167/bba88353-0ffd-4536-a8d4-756b72ae188b" width="50%" height="50%">
+
 ## Uso
 
 La línea de comando general para usar GTool es:
 
 ```bash
 gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp PAGES]
+               [--lang {af,ar,hy,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,eo,et,
+                        tl,fi,fr,de,el,iw,hi,hu,is,id,it,ja,ko,lv,lt,no,fa,
+                        pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,vi
+                }]
+
 ```
 
 ## Argumentos
@@ -22,7 +55,7 @@ gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--so
     
 -   `-p, --proxies` : Permite el uso de proxy. Se requiere la variable de entorno "PROXY\_URL".
     
-- `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
+-   `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
 
 -   `-v, --verbose` : Si se establece, devuelve un JSON con más información (como la página y la posición de la URL).
 
@@ -41,3 +74,5 @@ gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--so
 -   `--sort` : Si se establece, ordena los resultados por fecha, mostrando los resultados más recientes primero.
     
 -   `-mp PAGES, --max_pages PAGES` : El número máximo de páginas de resultados de búsqueda para rastrear. El valor predeterminado es 3.
+
+-    `--lang {af,ar,hy,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,eo,et,tl,fi,fr,de,el,iw,hi,hu,is,id,it,ja,ko,lv,lt,no,fa,pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,vi}` : Forzar a Google a devolver resultados sólo en un idioma específico (Sólo acepta algunos códigos del RFC 5646). No funciona bien, las primeras páginas (1-2) siempre contiene sitios en el idioma de su ubicación.
