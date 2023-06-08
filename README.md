@@ -22,11 +22,11 @@ Mediante el uso del argumento `--rotate` se podrán crear distintos enviroments 
 Para obtener ambas cookies basta con ir al navegador y realizar una búsqueda sobre Google, analizar el tráfico (inspeccionar elemento > Network > petición ?search...) y extraer de ahí las cookies. 
 
 Una forma más cómoda es la siguiente:
-1.- Descargar la extensión de Chrome `Cookie-editor` (https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm).
-2.- Habilitar en incognito
-3.- Realizar una búsqueda en Google y **rechazar cookies**
-4.- Abrir la extensión y copiar la información de la cookie **AEC** y **SCOS**
-5.- Repetir los pasos 2-4 para cada .env que se quiera añadir en la carpeta `./profiles`
+1. Descargar la extensión de Chrome `Cookie-editor` (https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm).
+2. Habilitar en incognito
+3. Realizar una búsqueda en Google y **rechazar cookies**
+4. Abrir la extensión y copiar la información de la cookie **AEC** y **SCOS**
+5. Repetir los pasos 2-4 para cada .env que se quiera añadir en la carpeta `./profiles`
 
 <img src="https://github.com/XAI-disinfodemics/gtool/assets/35236167/bba88353-0ffd-4536-a8d4-756b72ae188b" width="50%" height="50%">
 
