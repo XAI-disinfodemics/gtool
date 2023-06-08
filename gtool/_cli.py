@@ -72,7 +72,7 @@ def _configure_argparse():
         metavar='FILE', 
         type=str, 
         required=True,
-        help='Result filename where all results will be stored.',
+        help='Result filename where all results will be stored (only the name without the extension).',
     )
 
     # Filter arguments
@@ -99,6 +99,20 @@ def _configure_argparse():
         type=int, 
         default=3, 
         help="The maximum number of search result pages to crawl. Default is 3."
+    )
+
+    group_f.add_argument(
+        '--lang', 
+        dest='lang',
+        choices=['af', 'ar', 'hy', 'be', 'bg', 'ca', 'zh-CN', 'zh-TW', 'hr', 
+            'cs', 'da', 'nl', 'en', 'eo', 'et', 'tl', 'fi', 'fr', 'de', 'el', 
+            'iw', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'ko', 'lv', 'lt', 'no', 
+            'fa', 'pl', 'pt', 'ro', 'ru', 'sr', 'sk', 'sl', 'es', 'sw', 'sv', 
+            'th', 'tr', 'uk', 'vi'
+        ],
+        help="""Force Google to return results only in a specific language (It only accept some codes from RFC 5646).
+        It doesn't work well, the first pages (1-2) always contains sites in the language of your location.
+        """
     )
 
     # Once parser has been configured, arguments will be parsed
@@ -164,7 +178,9 @@ def main():
             _logger.error(f"{cookie} is required.")
             return
 
-    with open(args.filename, "w") as file:
+
+    ext = '.json' if args.verbose else '.txt'
+    with open(args.filename + ext, "w") as file:
         results = search(
             query=args.query,
             user_agent=random.choice(USER_AGENTS),
@@ -173,6 +189,7 @@ def main():
             cookie_SOCS=os.getenv('COOKIE_SCOS'),
             time=args.time,
             sort=args.sort,
+            lang=args.lang,
             max_pages=args.pages
         )
 
