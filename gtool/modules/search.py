@@ -14,6 +14,7 @@ def _search(
     query, 
     max_pages = 3, 
     tbs = None,
+    lang = None,
     bot_sleep_interval = 5.33
 ):
 
@@ -24,7 +25,8 @@ def _search(
         'biw': 1920, # Screen width
         'bih': 912, # Screen height
         'dpr': 1, # Pixel density
-        'tbs': tbs # Filters (time and sort)
+        'tbs': tbs, # Filters (time and sort)
+        'lr': lang
     }
     for i in range(0, max_pages):
         
@@ -76,6 +78,7 @@ def search(
     proxies = None, 
     time = None,
     sort = False,
+    lang = None,
     max_pages = 3, 
     bot_sleep_interval = 5.33
 ):
@@ -150,7 +153,14 @@ def search(
         if time:
             tbs += f'qdr:{time}'
         if sort:
-            tbs += ',sbd:1' if tbs else 'sbd:1'        
+            tbs += ',sbd:1' if tbs else 'sbd:1'  
+        if lang:
+            lr = f'lr:lang_1{lang.lower()}'
+            tbs += f',{lr}' if tbs else lr   
+            lang = f'lang_{lang.lower()}'   
+
+        print(tbs)
+        print(lang)  
         
         # Init search
         results = _search(
@@ -158,6 +168,7 @@ def search(
             query=query,
             max_pages=max_pages,
             tbs=tbs if tbs else None,
+            lang=lang,
             bot_sleep_interval=bot_sleep_interval
         )
     return results
