@@ -177,10 +177,7 @@ def search(
             tbs += f',{lr}' if tbs else lr   
             lang = f'lang_{lang.lower()}'   
 
-        print(tbs)
-        print("--", range)
-        return
-   
+ 
         # Init search
         results = _search(
             session=s,
