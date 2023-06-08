@@ -2,6 +2,7 @@ import os
 import json
 import random
 import argparse
+from datetime import datetime
 from dotenv import load_dotenv
 from pathlib import Path
 from gtool.modules.search import search
@@ -78,11 +79,20 @@ def _configure_argparse():
     # Filter arguments
     group_f = parser.add_argument_group('Filter optional arguments')
     # Define argument for time filter
-    group_f.add_argument(
+    time_group = group_f.add_mutually_exclusive_group(required=False)
+    time_group.add_argument(
         '--time', 
         dest='time',
         choices=['h', 'd', 'w', 'm', 'y'], 
         help='Specify the time filter. Choices are "h" for last hour, "d" for last day, "w" for last week, "m" for last month, "y" for last year.'
+    )
+    time_group.add_argument(
+        '--range', 
+        dest='range',
+        type=_valid_range,
+        help="""Specify the date range filter in the format 'DD/MM/YYYY - DD/MM/YYYY'. You can leave a the start or the end by using the
+        '#' wildcard (For example: '# - DD/MM/YYYY' or 'DD/MM/YYYY - #')
+        """
     )
     
     # Define argument for sorting by date
@@ -118,6 +128,54 @@ def _configure_argparse():
     # Once parser has been configured, arguments will be parsed
     args = parser.parse_args()
     return args
+
+
+def _valid_range(date_range_string):
+    """Validates the date range entered by the user.
+
+    The function takes a date range in the form:
+        - 'DD/MM/YYYY - DD/MM/YYYY'
+        - With wildcards as '# - DD/MM/YYYY' or 'DD/MM/YYYY - #'. 
+       
+    It raises an ArgumentTypeError if the dates are in the wrong order, if a date 
+    is greater than today, or if the input cannot be parsed.
+
+    Parameters
+    ----------
+    date_range_string: str
+        The date range to be validated. This should be in the form 'DD/MM/YYYY - DD/MM/YYYY', or with wildcards as 
+        '# - DD/MM/YYYY' or 'DD/MM/YYYY - #'. The start date must not be later than the end date.
+
+    Returns
+    ----------
+    date_range: tuple
+        A tuple of two datetime objects (start_date/None, end_date/None) 
+    """
+    def conver_date(date_string, frm):
+        if date_string == "#":
+            return None
+        else:
+            date = datetime.strptime(date_string, frm)
+            if date > datetime.now():
+                raise argparse.ArgumentTypeError(f"Not a valid range: {date_string} is grater than today")
+            return date
+
+    try:
+        frm = "%d/%m/%Y"
+        start_date_string, end_date_string = date_range_string.split(' - ')
+        start_date = conver_date(start_date_string, frm)
+        end_date = conver_date(end_date_string, frm)
+
+        if start_date and end_date and start_date > end_date:
+            raise argparse.ArgumentTypeError("Not a valid range: The start date must not be later than the end date.")
+    
+        return (start_date, end_date)
+
+    except ValueError:
+        pass
+
+    msg = "The range contains an invalid date: {0!r}".format(date_range_string)
+    raise argparse.ArgumentTypeError(msg)
 
 
 def _load_proxy():
@@ -188,6 +246,7 @@ def main():
             cookie_AEC=os.getenv('COOKIE_AEC'),
             cookie_SOCS=os.getenv('COOKIE_SCOS'),
             time=args.time,
+            range=args.range,
             sort=args.sort,
             lang=args.lang,
             max_pages=args.pages
