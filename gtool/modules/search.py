@@ -77,6 +77,7 @@ def search(
     cookie_SOCS, 
     proxies = None, 
     time = None,
+    range = None,
     sort = False,
     lang = None,
     max_pages = 3, 
@@ -116,11 +117,24 @@ def search(
             - 'm' for last month. 
             - 'y' for last year.
         Default is None, meaning no time filter is applied.
+
+    range: tuple, optional
+        Specify the date range filter with a tuple of two datetime objects (start_date/None, end_date/None) 
+        Default is None, meaning no time filter is applied.
         
     sort: bool, optional
         Flag that indicates whether to sort the search results by date, 
         with the most recent results appearing first. 
         Default is False, meaning results are not sorted by date.
+
+    lang: string, optional
+        RFC 5646 lang code to force Google to return results only in a specific language 
+        Available lang codes = ['af', 'ar', 'hy', 'be', 'bg', 'ca', 'zh-CN', 'zh-TW', 'hr', 
+            'cs', 'da', 'nl', 'en', 'eo', 'et', 'tl', 'fi', 'fr', 'de', 'el', 
+            'iw', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'ko', 'lv', 'lt', 'no', 
+            'fa', 'pl', 'pt', 'ro', 'ru', 'sr', 'sk', 'sl', 'es', 'sw', 'sv', 
+            'th', 'tr', 'uk', 'vi'
+        ]
         
     max_pages: int, optional
         The maximum number of search result pages to crawl. Default is 3.
@@ -152,6 +166,10 @@ def search(
         tbs = ''
         if time:
             tbs += f'qdr:{time}'
+        elif range:
+            start_date = range[0].strftime("%-m/%-d/%Y") if range[0] else ''
+            end_date = range[1].strftime("%-m/%-d/%Y") if range[1] else ''
+            tbs += f'cdr:1,cd_min:{start_date},cd_max:{end_date}'
         if sort:
             tbs += ',sbd:1' if tbs else 'sbd:1'  
         if lang:
@@ -160,8 +178,9 @@ def search(
             lang = f'lang_{lang.lower()}'   
 
         print(tbs)
-        print(lang)  
-        
+        print("--", range)
+        return
+   
         # Init search
         results = _search(
             session=s,
