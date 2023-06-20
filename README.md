@@ -1,8 +1,13 @@
 # GTool
 
-GTool es una herramienta de búsqueda en Google, que permite personalizar tus consultas y filtrar los resultados según tus necesidades.
+GTool es una herramienta de búsqueda para Google y DuckDuckGo, que permite personalizar tus consultas y filtrar los resultados según tus necesidades.
 
-## Configuración
+## Configuración DuckDuckGo
+DuckDuckGo es un navegador que se centra en la privacidad, por ello, no usa cookies y funciona
+directamente sin configurar nada.
+**NOTA**: DDG tiene desactivado el filtrado por rango de fechas (--range), no funciona
+
+## Configuración Google
 
 Para poder hacer uso de la herramienta es necesario exportar dos variables de entorno que contienen dos cookies obligatorias de Google:
 
@@ -35,11 +40,7 @@ Una forma más cómoda es la siguiente:
 La línea de comando general para usar GTool es:
 
 ```bash
-gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--sort] [-mp PAGES]
-               [--lang {af,ar,hy,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,eo,et,
-                        tl,fi,fr,de,el,iw,hi,hu,is,id,it,ja,ko,lv,lt,no,fa,
-                        pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,vi
-                }]
+usage: test.py [-h] [-L LEVEL] [-p] [-mp PAGES] [-v] -q QUERY -f FILE {DuckDuckGo,Google} ...
 
 ```
 
@@ -55,10 +56,10 @@ gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--so
     
 -   `-p, --proxies` : Permite el uso de proxy. Se requiere la variable de entorno "PROXY\_URL".
     
--   `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
 
 -   `-v, --verbose` : Si se establece, devuelve un JSON con más información (como la página y la posición de la URL).
 
+-   `-mp PAGES, --max_pages PAGES` : El número máximo de páginas de resultados de búsqueda a recorrer. El valor predeterminado es 3.
 
 ### Argumentos obligatorios
 
@@ -66,13 +67,22 @@ gtool [-h] [-L LEVEL] [-p] [-r] [-v] -q QUERY -f FILE [--time {h,d,w,m,y}] [--so
     
 -   `-f FILE, --filename FILE` : Nombre del archivo de resultados donde se almacenarán todos los resultados.
     
-
-### Argumentos opcionales de filtrado
+### DuckDuckGo - Argumentos opcionales de filtrado
 
 -   `--time {h,d,w,m,y}` : Especifica el filtro de tiempo. Las opciones son "h" para la última hora, "d" para el último día, "w" para la última semana, "m" para el último mes, "y" para el último año.
+
+-   `--range RANGE` : Especifica el filtro de rango de fechas en el formato 'DD/MM/YYYY - DD/MM/YYYY'. Puedes ignorar el inicio y el final usando el comodín '#' (For example: '# - DD/MM/YYYY' or 'DD/MM/YYYY - #')(default: None)
+
+-    `--lang {af,ar,hy,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,eo,et,tl,fi,fr,de,el,iw,hi,hu,is,id,it,ja,ko,lv,lt,no,fa,pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,vi}` : Forzar a Google a devolver resultados sólo en un idioma específico (Sólo acepta algunos códigos del RFC 5646). No funciona bien, las primeras páginas (1-2) siempre contiene sitios en el idioma de su ubicación.
+
+### Google - Argumentos opcionales de filtrado
+
+-   `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
+  
+-   `--time {h,d,w,m,y}` : Especifica el filtro de tiempo. Las opciones son "h" para la última hora, "d" para el último día, "w" para la última semana, "m" para el último mes, "y" para el último año.
+
+-   `--range RANGE` : Especifica el filtro de rango de fechas en el formato 'DD/MM/YYYY - DD/MM/YYYY'. Puedes ignorar el inicio y el final usando el comodín '#' (For example: '# - DD/MM/YYYY' or 'DD/MM/YYYY - #')(default: None)
     
 -   `--sort` : Si se establece, ordena los resultados por fecha, mostrando los resultados más recientes primero.
-    
--   `-mp PAGES, --max_pages PAGES` : El número máximo de páginas de resultados de búsqueda para rastrear. El valor predeterminado es 3.
 
 -    `--lang {af,ar,hy,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,eo,et,tl,fi,fr,de,el,iw,hi,hu,is,id,it,ja,ko,lv,lt,no,fa,pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,vi}` : Forzar a Google a devolver resultados sólo en un idioma específico (Sólo acepta algunos códigos del RFC 5646). No funciona bien, las primeras páginas (1-2) siempre contiene sitios en el idioma de su ubicación.
