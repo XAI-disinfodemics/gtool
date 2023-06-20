@@ -4,7 +4,8 @@ GTool es una herramienta de búsqueda para Google y DuckDuckGo, que permite pers
 
 ## Configuración DuckDuckGo
 DuckDuckGo es un navegador que se centra en la privacidad, por ello, no usa cookies y funciona
-directamente sin configurar nada.
+directamente sin configurar nada.  
+
 **NOTA**: DDG tiene desactivado el filtrado por rango de fechas (--range), no funciona
 
 ## Configuración Google
@@ -73,7 +74,7 @@ usage: test.py [-h] [-L LEVEL] [-p] [-mp PAGES] [-v] -q QUERY -f FILE {DuckDuckG
 
 -   `--range RANGE` : Especifica el filtro de rango de fechas en el formato 'DD/MM/YYYY - DD/MM/YYYY'. Puedes ignorar el inicio y el final usando el comodín '#' (For example: '# - DD/MM/YYYY' or 'DD/MM/YYYY - #')(default: None)
 
--    `--lang {af,ar,hy,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,eo,et,tl,fi,fr,de,el,iw,hi,hu,is,id,it,ja,ko,lv,lt,no,fa,pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,vi}` : Forzar a Google a devolver resultados sólo en un idioma específico (Sólo acepta algunos códigos del RFC 5646). No funciona bien, las primeras páginas (1-2) siempre contiene sitios en el idioma de su ubicación.
+-    `--lang {au-en,es-es,wt-wt,ar-es,at-de,be-fr,be-nl,br-pt,bg-bg,ca-en,ca-fr,ct-ca,cl-es,cn-zh,co-es,hr-hr,cz-cs,dk-da,ee-et,fi-fi,fr-fr,de-de,gr-el,hk-tzh,hu-hu,is-is,in-en,id-en,ie-en,il-en,it-it,jp-jp,kr-kr,lv-lv,lt-lt,my-en,mx-es,nl-nl,nz-en,no-no,pk-en,pe-es,ph-en,pl-pl,pt-pt,ro-ro,ru-ru,xa-ar,sg-en,sk-sk,sl-sl,za-en,es-ca,se-sv,ch-de,ch-fr,tw-tzh,th-en,tr-tr,us-en,us-es,ua-uk,uk-en,vn-en}` : Forzar a Google a devolver resultados sólo en un idioma específico (Sólo acepta algunos códigos del RFC 5646). No funciona bien, las primeras páginas (1-2) siempre contiene sitios en el idioma de su ubicación.
 
 ### Google - Argumentos opcionales de filtrado
 
