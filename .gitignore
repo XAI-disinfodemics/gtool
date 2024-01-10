@@ -5,6 +5,7 @@ __pycache__/
 *.csv
 *.json
 *.txt
+!requirements.txt
 # Ony for testing purpose
 test.py 
 .env*
