@@ -109,7 +109,7 @@ class GoogleEngine(BaseEngine):
             rotate=args.rotate
         )
     
-    def _rotate_profile():
+    def _rotate_profile(self):
         profile_path = Path("./profiles")
         # Check if the profile path exist
         if profile_path.exists() and profile_path.is_dir():
