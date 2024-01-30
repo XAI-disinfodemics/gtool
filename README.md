@@ -41,7 +41,7 @@ Una forma más cómoda es la siguiente:
 La línea de comando general para usar GTool es:
 
 ```bash
-usage: test.py [-h] [-L LEVEL] [-p] [-mp PAGES] [-v] -q QUERY -f FILE {DuckDuckGo,Google} ...
+usage: run.py [-h] [-L LEVEL] [-p] [-mp PAGES] [-v] -q QUERY -f FILE {DuckDuckGo,Google} ...
 
 ```
 
