@@ -170,9 +170,10 @@ class GoogleEngine(BaseEngine):
         tree = html.fromstring(response.content)
         return [
             {
-                "url": card.xpath(".//a")[0].get("href").strip().lower(), 
+                "url": card_urls[0].get("href").strip().lower(), 
                 "position": index+1+count,
                 "page": page+1
             }
             for index, card in enumerate(tree.xpath(NEWS_CARD_XPATH))
+            if (card_urls := card.xpath(".//a"))
         ]   
