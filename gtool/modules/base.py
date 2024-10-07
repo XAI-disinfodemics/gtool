@@ -166,7 +166,6 @@ class BaseEngine(ABC):
                     if response.status_code == 429:
                         _logger.error("Captcha block. Try to go to the browser and answer the captcha if it is necessary.")
                     else:
-                        print(params)
                         _logger.error(f"An error has ocurred during the search [{response.status_code}].  Skipping...")
                     break
             except requests.exceptions.ProxyError as e:
