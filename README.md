@@ -73,6 +73,8 @@ usage: run.py [-h] [-L LEVEL] [-p] [-mp PAGES] [-v] -q QUERY -f FILE {DuckDuckGo
 -   `--time {h,d,w,m,y}` : Especifica el filtro de tiempo. Las opciones son "h" para la última hora, "d" para el último día, "w" para la última semana, "m" para el último mes, "y" para el último año.
 
 -   `--range RANGE` : Especifica el filtro de rango de fechas en el formato 'DD/MM/YYYY - DD/MM/YYYY'. Puedes ignorar el inicio y el final usando el comodín '#' (For example: '# - DD/MM/YYYY' or 'DD/MM/YYYY - #')(default: None)
+> [!WARNING]  
+> El rango de fechas está temporalmente desactivado por parte de DuckDuckGo desde finales de Junio de 2024.
 
 -    `--lang {au-en,es-es,wt-wt,ar-es,at-de,be-fr,be-nl,br-pt,bg-bg,ca-en,ca-fr,ct-ca,cl-es,cn-zh,co-es,hr-hr,cz-cs,dk-da,ee-et,fi-fi,fr-fr,de-de,gr-el,hk-tzh,hu-hu,is-is,in-en,id-en,ie-en,il-en,it-it,jp-jp,kr-kr,lv-lv,lt-lt,my-en,mx-es,nl-nl,nz-en,no-no,pk-en,pe-es,ph-en,pl-pl,pt-pt,ro-ro,ru-ru,xa-ar,sg-en,sk-sk,sl-sl,za-en,es-ca,se-sv,ch-de,ch-fr,tw-tzh,th-en,tr-tr,us-en,us-es,ua-uk,uk-en,vn-en}` : Forzar a DuckDuckgo a devolver resultados sólo en un idioma específico.
   
