@@ -13,11 +13,11 @@ directamente sin configurar nada.
 Para poder hacer uso de la herramienta es necesario exportar dos variables de entorno que contienen dos cookies obligatorias de Google:
 
 -  COOKIE_AEC: Garantizar que las solicitudes dentro de una sesión de navegación son realizadas por el usuario y no por otros sitios - 6 meses
--  COOKIE_SCOS: Se utiliza para almacenar el estado de un usuario con respecto a sus elecciones de cookies - 13 meses
+-  COOKIE_SOCS: Se utiliza para almacenar el estado de un usuario con respecto a sus elecciones de cookies - 13 meses
 
 ```bash
 COOKIE_AEC="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-COOKIE_SCOS="SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+COOKIE_SOCS="SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
 ```
 Mediante el uso del argumento `--rotate` se podrán crear distintos enviroments (.env) y almacenarlos en la carpeta `./profiles` (en la ruta actual del usuario), de este modo la herramienta cogerá en cada ejecución un enviroment aleatorio y con ello un set de cookies diferente, reduciendo las probabilidades de captcha. 
 
@@ -31,7 +31,7 @@ Una forma más cómoda es la siguiente:
 1. Descargar la extensión de Chrome `Cookie-editor` (https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm).
 2. Habilitar en incognito
 3. Realizar una búsqueda en Google y **rechazar cookies**
-4. Abrir la extensión y copiar la información de la cookie **AEC** y **SCOS**
+4. Abrir la extensión y copiar la información de la cookie **AEC** y **SOCS**
 5. Repetir los pasos 2-4 para cada .env que se quiera añadir en la carpeta `./profiles`
 
 <img src="https://github.com/XAI-disinfodemics/gtool/assets/35236167/bba88353-0ffd-4536-a8d4-756b72ae188b" width="50%" height="50%">
@@ -78,7 +78,7 @@ usage: run.py [-h] [-L LEVEL] [-p] [-mp PAGES] [-v] -q QUERY -f FILE {DuckDuckGo
   
 ### Google - Argumentos opcionales de filtrado
 
--   `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SCOS/PROXY_URL) en diferentes configuraciones.
+-   `-r, --rotate` : Si se establece, seleccionará aleatoriamente un archivo `.env*` del directorio `./profiles` (en la ruta del usuario). En este directorio, el usuario puede añadir múltiples archivos `.env` (con las variables de entorno AEC/SOCS/PROXY_URL) en diferentes configuraciones.
   
 -   `--time {h,d,w,m,y}` : Especifica el filtro de tiempo. Las opciones son "h" para la última hora, "d" para el último día, "w" para la última semana, "m" para el último mes, "y" para el último año.
 

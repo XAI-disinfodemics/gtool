@@ -13,7 +13,7 @@ _logger = setup_logging(__name__)
 
 class GoogleEngine(BaseEngine):
     name = "Google"
-    help = "Use the Google search engine to scrape news. COOKIE_AEC and COOKIE_SCOS env vars required"
+    help = "Use the Google search engine to scrape news. COOKIE_AEC and COOKIE_SOCS env vars required"
 
     def __init__(self, sort = False, rotate = False, **kwargs):
         """ * -> force all arguments afterwards are keyword-only
@@ -31,7 +31,7 @@ class GoogleEngine(BaseEngine):
         self.sort = sort
         self.rotate = rotate
 
-        # Check Google engine required enviroment variables (AOC/SCOS cookies)
+        # Check Google engine required enviroment variables (AOC/SOCS cookies)
         if rotate:
             if not self._rotate_profile():
                 return 
@@ -39,7 +39,7 @@ class GoogleEngine(BaseEngine):
             load_dotenv() 
 
         # Check required enviroment variables
-        cookies = ['COOKIE_AEC', 'COOKIE_SCOS']
+        cookies = ['COOKIE_AEC', 'COOKIE_SOCS']
         for cookie in cookies:
             if not os.getenv(cookie):
                 _logger.error(f"{cookie} is required.")
@@ -68,7 +68,7 @@ class GoogleEngine(BaseEngine):
         rotate: bool, optional
             If set, it will choose randomly a .env.N from the ./profiles folder 
             (of the user path). In this folder the user can add multiple .env 
-            (AEC/SCOS/PROXY_URL) files with different configurations.
+            (AEC/SOCS/PROXY_URL) files with different configurations.
         """
         super()._cli_setup_parser(subparser) # Common parameters between engines like time or range 
         subparser.add_argument(
@@ -96,7 +96,7 @@ class GoogleEngine(BaseEngine):
             action='store_true', 
             help="""
             If set, it will choose randomly a .env.N from the ./profiles folder (of the user path). 
-            In this folder the user can add multiple .env (AEC/SCOS/PROXY_URL) files with different configurations.
+            In this folder the user can add multiple .env (AEC/SOCS/PROXY_URL) files with different configurations.
             """
         )
 
@@ -136,7 +136,7 @@ class GoogleEngine(BaseEngine):
         
         # Add required cookies
         session.cookies.set("AEC", os.getenv('COOKIE_AEC'), domain=".google.com")
-        session.cookies.set("SOCS", os.getenv('COOKIE_SCOS'), domain=".google.com")
+        session.cookies.set("SOCS", os.getenv('COOKIE_SOCS'), domain=".google.com")
 
         # Conf date filters
         tbs = ''
