@@ -17,11 +17,7 @@ def valid_loglevel(loglevel):
 
 def configure_logging(loglevel):
     rootLogger = logging.getLogger()
-
-    # Set level
-    if loglevel:
-        level = logging.getLevelName(loglevel)
-        rootLogger.setLevel(level)
+    rootLogger.setLevel(loglevel)
 
     # Create formatter
     formatter = logging.Formatter('{asctime}.{msecs:03.0f}|{levelname}|{name}|{message}', datefmt = '%Y-%m-%d %H:%M:%S', style = '{')
